@@ -6,6 +6,7 @@ import android.provider.ContactsContract.DisplayNameSources
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
+import kotlin.math.pow
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -176,7 +177,7 @@ class MainActivity : AppCompatActivity() {
                 Displays.text = displayble.joinToString("")
             }
         }
-
+        //clear and equal
         btnAc.setOnClickListener {
             tempValue.clear()
             tempValue2.clear()
@@ -186,15 +187,16 @@ class MainActivity : AppCompatActivity() {
         }
         bnequal.setOnClickListener {
             if (tempValue.isNotEmpty() && tempValue2.isNotEmpty() && operate != "") {
-                var values1: Int = tempValue.joinToString("").toInt()
-                var values2: Int = tempValue2.joinToString("").toInt()
+                val values1: Int = tempValue.joinToString("").toInt()
+                val values2: Int = tempValue2.joinToString("").toInt()
 
-                var calculate: String = if (percent != "%") {
+                val calculate: String = if (percent != "%") {
                     when (operate) {
                         "+" -> (values1 + values2).toString()
                         "-" -> (values1 - values2).toString()
                         "x" -> (values1 * values2).toString()
                         "/" -> (values1.toFloat() / values2.toFloat()).toString()
+                        "^" -> (values1.toFloat().pow(values2.toFloat())).toString()
                         else -> "logic Error"
                     }
                 } else {
@@ -212,7 +214,24 @@ class MainActivity : AppCompatActivity() {
                 percent = ""
                 }
             }
-
+        bnBackspace.setOnClickListener{
+            if (tempValue.isNotEmpty() && tempValue2.isEmpty()){
+                if(operate != "") {
+                    operate = ""
+                }
+                if (tempValue[0] != 0) {
+                    tempValue.removeAt(tempValue.size - 1)
+                }
+                displayble.removeAt(displayble.size - 1)
+                Displays.text = displayble.joinToString("")
+            }
+            if(tempValue2.isNotEmpty()){
+                tempValue2.removeAt(tempValue2.size - 1)
+                displayble.removeAt(displayble.size - 1)
+                Displays.text = displayble.joinToString("")
+            }
+        }
+        //operator
         bnAdd.setOnClickListener {
             if (tempValue.isNotEmpty() && operate.isEmpty()) {
                 operate = "+"
@@ -234,6 +253,13 @@ class MainActivity : AppCompatActivity() {
                 Displays.text = displayble.joinToString("")
             }
         }
+        bnpower.setOnClickListener {
+            if (tempValue.isNotEmpty() && operate.isEmpty()) {
+            operate = "^"
+            displayble += " ^ "
+            Displays.text = displayble.joinToString("")
+            }
+        }
         bnMulti.setOnClickListener {
             if (tempValue.isNotEmpty() && operate.isEmpty()) {
                 operate = "x"
@@ -249,26 +275,13 @@ class MainActivity : AppCompatActivity() {
                 Displays.text = displayble.joinToString("")
             }
         }
-
-       bnBackspace.setOnClickListener{
-             if (tempValue.isNotEmpty() && tempValue2.isEmpty()){
-                if(operate != "") {
-                    operate = ""
-                }
-                if (tempValue[0] != 0) {
-                    tempValue.removeAt(tempValue.size - 1)
-                }
-                 displayble.removeAt(displayble.size - 1)
-                 Displays.text = displayble.joinToString("")
-         }
-            if(tempValue2.isNotEmpty()){
-                tempValue2.removeAt(tempValue2.size - 1)
-                displayble.removeAt(displayble.size - 1)
-                Displays.text = displayble.joinToString("")
-            }
+        bnbraces.setOnClickListener {
+            Toast.makeText(this@MainActivity, "Soon this feature will be added", Toast.LENGTH_SHORT).show()
         }
+        bndot.setOnClickListener {
+            Toast.makeText(this@MainActivity, "Soon this feature will be added", Toast.LENGTH_SHORT).show()
+        }
+
+
     }
 }
-
-
-
